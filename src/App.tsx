@@ -1,18 +1,23 @@
 import LandingPage from '@/pages/landing-page';
-import { useQueryCall, useUpdateCall } from '@ic-reactor/react';
+import { getProductQuery } from '@/services/product-service';
+import { getUserQuery } from '@/services/user-service';
+import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
-  const { data: count, call: refetchCount } = useQueryCall({
-    functionName: 'get',
-  });
+  const { getUser, userLoading } = getUserQuery();
+  const { getProduct, productLoading } = getProductQuery();
 
-  const { call: increment, loading } = useUpdateCall({
-    functionName: 'inc',
-    onSuccess: () => {
-      refetchCount();
-    },
-  });
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = await getUser();
+      const product = await getProduct();
+
+      console.log(user, product);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <BrowserRouter>
