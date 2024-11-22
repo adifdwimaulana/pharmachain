@@ -2,15 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
-import { ActorProvider, AgentProvider } from '@ic-reactor/react';
-import { idlFactory, canisterId } from './declarations/backend';
+import { AgentProvider } from '@ic-reactor/react';
+import { ServiceContextProvider } from '@/contexts/service-context';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <AgentProvider withProcessEnv>
-      <ActorProvider idlFactory={idlFactory} canisterId={canisterId}>
+      <ServiceContextProvider>
         <App />
-      </ActorProvider>
+      </ServiceContextProvider>
     </AgentProvider>
   </React.StrictMode>,
 );
