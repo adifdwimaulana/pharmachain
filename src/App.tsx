@@ -1,30 +1,23 @@
 import LandingPage from '@/pages/landing-page';
-import { getProductQuery } from '@/services/product-service';
-import { getUserQuery } from '@/services/user-service';
-import { useEffect } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
+import LoginPage from './pages/login-page';
+import UnprotectedRoutes from './routes/UnprotectedRoutes';
+import ProtectedRoute from './routes/ProtectedRoutes';
+import HomePage from './pages/home';
 
 function App() {
-  const { getUser, userLoading } = getUserQuery();
-  const { getProduct, productLoading } = getProductQuery();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const user = await getUser();
-      const product = await getProduct();
-
-      console.log(user, product);
-    };
-
-    fetchData();
-  }, []);
+  const router = createBrowserRouter (
+    createRoutesFromElements([
+      <Route key="/" path="/" element={<UnprotectedRoutes><LandingPage /></UnprotectedRoutes>} />,
+      <Route key="login" path="/login" element={<UnprotectedRoutes><LoginPage /></UnprotectedRoutes>} />,
+      
+      <Route key="home" path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />,
+    ])
+  )
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-      </Routes>
-    </BrowserRouter>
+    <RouterProvider router={router} />
   );
 }
 
