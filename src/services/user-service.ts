@@ -9,3 +9,13 @@ export function getUserQuery() {
   });
   return { getUser, userLoading };
 }
+
+export function registerQuery() {
+  const { useUpdateCall: userRegister } = useServiceContext().userService;
+
+  const { call: createUser } = userRegister({
+      functionName: "register",
+  });
+
+  return { createUser };  
+}

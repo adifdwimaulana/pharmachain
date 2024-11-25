@@ -25,15 +25,30 @@ interface Props {
 interface ServiceType {
   userService: CreateReactorReturnType<ActorSubclass<_SERVICE_USER>>;
   productService: CreateReactorReturnType<ActorSubclass<_SERVICE_PRODUCT>>;
-
   userCanisterId: string;
   productCanisterId: string;
+  authenticating : boolean;
 }
 
 const ServiceContext = createContext<ServiceType | null>(null);
 
 const ServiceContextProvider: React.FC<Props> = ({ children }) => {
   const agentManager = useAgentManager();
+  const [authenticating, setAuthenticating] = useState(true);
+
+  useEffect(() => {
+      const unsubscribe = agentManager.subscribeAuthState((authState) => {
+          if (authState.authenticating) {
+              setAuthenticating(true);
+          } else {
+              setAuthenticating(false);
+          }
+      });
+
+      return () => {
+          unsubscribe();
+      };
+  }, [agentManager]);
 
   const userService = useMemo(
     () =>
@@ -62,6 +77,7 @@ const ServiceContextProvider: React.FC<Props> = ({ children }) => {
         productService,
         userCanisterId,
         productCanisterId,
+        authenticating
       }}
     >
       {children}
