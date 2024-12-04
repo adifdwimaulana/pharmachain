@@ -5,18 +5,12 @@ import {
   CreateReactorReturnType,
 } from '@ic-reactor/react/dist/types';
 
-import { _SERVICE as _SERVICE_PRODUCT } from '@/declarations/product/product.did';
 import { _SERVICE as _SERVICE_USER } from '@/declarations/user/user.did';
 import {
   canisterId as userCanisterId,
   idlFactory as userIdlFactory,
   user,
 } from '@/declarations/user';
-import {
-  canisterId as productCanisterId,
-  idlFactory as productIdlFactory,
-  product,
-} from '@/declarations/product';
 
 interface Props {
   children: React.ReactNode;
@@ -24,10 +18,8 @@ interface Props {
 
 interface ServiceType {
   userService: CreateReactorReturnType<ActorSubclass<_SERVICE_USER>>;
-  productService: CreateReactorReturnType<ActorSubclass<_SERVICE_PRODUCT>>;
   userCanisterId: string;
-  productCanisterId: string;
-  authenticating : boolean;
+  authenticating: boolean;
 }
 
 const ServiceContext = createContext<ServiceType | null>(null);
@@ -37,17 +29,17 @@ const ServiceContextProvider: React.FC<Props> = ({ children }) => {
   const [authenticating, setAuthenticating] = useState(true);
 
   useEffect(() => {
-      const unsubscribe = agentManager.subscribeAuthState((authState) => {
-          if (authState.authenticating) {
-              setAuthenticating(true);
-          } else {
-              setAuthenticating(false);
-          }
-      });
+    const unsubscribe = agentManager.subscribeAuthState((authState) => {
+      if (authState.authenticating) {
+        setAuthenticating(true);
+      } else {
+        setAuthenticating(false);
+      }
+    });
 
-      return () => {
-          unsubscribe();
-      };
+    return () => {
+      unsubscribe();
+    };
   }, [agentManager]);
 
   const userService = useMemo(
@@ -60,24 +52,12 @@ const ServiceContextProvider: React.FC<Props> = ({ children }) => {
     [agentManager],
   );
 
-  const productService = useMemo(
-    () =>
-      createReactor<typeof product>({
-        canisterId: productCanisterId,
-        idlFactory: productIdlFactory,
-        agentManager,
-      }),
-    [agentManager],
-  );
-
   return (
     <ServiceContext.Provider
       value={{
         userService,
-        productService,
         userCanisterId,
-        productCanisterId,
-        authenticating
+        authenticating,
       }}
     >
       {children}

@@ -10,6 +10,34 @@
         }
       }
     },
+    "medicine": {
+      "type": "motoko",
+      "main": "backend/medicine/main.mo",
+      "declarations": {
+        "node_compatibility": true
+      }
+    },
+    "package": {
+      "type": "motoko",
+      "main": "backend/package/main.mo",
+      "declarations": {
+        "node_compatibility": true
+      }
+    },
+    "tracker": {
+      "type": "motoko",
+      "main": "backend/tracker/main.mo",
+      "declarations": {
+        "node_compatibility": true
+      }
+    },
+    "transaction": {
+      "type": "motoko",
+      "main": "backend/transaction/main.mo",
+      "declarations": {
+        "node_compatibility": true
+      }
+    },
     "user": {
       "type": "motoko",
       "main": "backend/user/main.mo",
@@ -17,15 +45,14 @@
         "node_compatibility": true
       }
     },
-    "product": {
-      "type": "motoko",
-      "main": "backend/product/main.mo",
-      "declarations": {
-        "node_compatibility": true
-      }
-    },
     "frontend": {
-      "dependencies": ["user", "product"],
+      "dependencies": [
+        "medicine",
+        "package",
+        "tracker",
+        "transaction",
+        "user"
+      ],
       "type": "assets",
       "source": ["dist/"]
     }

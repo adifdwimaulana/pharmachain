@@ -10,12 +10,22 @@ export function getUserQuery() {
   return { getUser, userLoading };
 }
 
+export function updateUserQuery() {
+  const { useUpdateCall: userUpdate } = useServiceContext().userService;
+
+  const { call: updateUser, loading } = userUpdate({
+    functionName: 'updateUser',
+  });
+
+  return { updateUser };
+}
+
 export function registerQuery() {
   const { useUpdateCall: userRegister } = useServiceContext().userService;
 
   const { call: createUser } = userRegister({
-      functionName: "register",
+    functionName: 'register',
   });
 
-  return { createUser };  
+  return { createUser };
 }
