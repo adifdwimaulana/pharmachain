@@ -1,11 +1,8 @@
-import useAuth from '@/hooks/useAuth'
-import React from 'react'
+import useAuth from '@/hooks/useAuth';
 
 const LoginPage = () => {
-    const { login } = useAuth()
-    return (
-      <div onClick={login}>Login</div>
-    );
-  };
-  
-  export default LoginPage;
+  const { login } = useAuth();
+  return <div onClick={login}>Login</div>;
+};
+
+export default LoginPage;
